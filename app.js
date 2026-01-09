@@ -129,6 +129,15 @@ app.post("/enpostar", async (req, res) => {
 });
 
 // servidor
-app.listen(3000, () => {
-  console.log("Servidor rodando na porta 3000");
+// rota health check (Render)
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
 });
+
+// servidor (Render usa PORT dinâmica)
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log("Servidor rodando na porta " + PORT);
+});
+
