@@ -141,3 +141,8 @@ app.listen(PORT, () => {
   console.log("Servidor rodando na porta " + PORT);
 });
 
+app.post("/enviar", (req, res) => {
+  req.url = "/enpostar";
+  app._router.handle(req, res);
+});
+
