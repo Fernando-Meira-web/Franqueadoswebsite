@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
@@ -6,28 +7,73 @@ const axios = require("axios");
 
 const app = express();
 
-// ================= DEBUG INICIAL =================
+/* ================= DEBUG INICIAL ================= */
 console.log("🔑 BREVO_API_KEY existe?", !!process.env.BREVO_API_KEY);
 console.log("📧 EMAIL_RECEBER:", process.env.EMAIL_RECEBER);
+console.log("🌐 PORT recebida:", process.env.PORT);
 
-// ================= MIDDLEWARES =================
+/* ================= MIDDLEWARES ================= */
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
 
-// ================= PEDIDOS =================
+/* ================= ARQUIVO DE PEDIDOS ================= */
 const DATA_DIR = "public/data";
 const ARQUIVO = `${DATA_DIR}/pedidos.json`;
 
-if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-if (!fs.existsSync(ARQUIVO)) fs.writeFileSync(ARQUIVO, "[]");
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
 
-// ================= ROTA DE TESTE =================
+if (!fs.existsSync(ARQUIVO)) {
+  fs.writeFileSync(ARQUIVO, "[]");
+}
+
+/* ================= ROTA BASE ================= */
 app.get("/", (req, res) => {
   res.send("API Desce Lava - Online 🚀");
 });
 
-// ================= ROTA DE ENVIO =================
+/* ================= ROTA TESTE BREVO (ISOLADA) ================= */
+app.get("/teste-brevo", async (req, res) => {
+  try {
+    const response = await axios.post(
+      "https://api.brevo.com/v3/smtp/email",
+      {
+        sender: {
+          name: "Teste Desce Lava",
+          email: "no-reply@descelava.com.br"
+        },
+        to: [
+          {
+            email: process.env.EMAIL_RECEBER,
+            name: "Admin"
+          }
+        ],
+        subject: "✅ Teste Brevo Funcionando",
+        htmlContent: "<p>Email de teste enviado com sucesso.</p>"
+      },
+      {
+        headers: {
+          "api-key": process.env.BREVO_API_KEY,
+          "accept": "application/json",
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+    console.log("📧 Teste Brevo enviado com sucesso");
+    res.json(response.data);
+  } catch (err) {
+    console.error(
+      "❌ Erro Brevo TESTE:",
+      err.response?.data || err.message
+    );
+    res.status(500).json(err.response?.data || err.message);
+  }
+});
+
+/* ================= ROTA DE PEDIDO ================= */
 app.post("/enpostar", (req, res) => {
   let produtos = [];
 
@@ -48,15 +94,15 @@ app.post("/enpostar", (req, res) => {
     data: new Date().toLocaleString("pt-BR")
   };
 
-  // salva pedido
+  /* salva pedido */
   const pedidos = JSON.parse(fs.readFileSync(ARQUIVO, "utf8"));
   pedidos.push(pedido);
   fs.writeFileSync(ARQUIVO, JSON.stringify(pedidos, null, 2));
 
-  // responde imediato ao usuário
+  /* responde rápido ao usuário */
   res.redirect("sucesso.html");
 
-  // ================= EMAIL BREVO =================
+  /* ================= EMAIL BREVO ================= */
   setImmediate(async () => {
     try {
       await axios.post(
@@ -93,23 +139,23 @@ app.post("/enpostar", (req, res) => {
         {
           headers: {
             "api-key": process.env.BREVO_API_KEY,
-            "Content-Type": "application/json",
-            "accept": "application/json"
+            "accept": "application/json",
+            "Content-Type": "application/json"
           }
         }
       );
 
-      console.log("📧 Email enviado via Brevo API");
+      console.log("📧 Email do pedido enviado via Brevo");
     } catch (err) {
       console.error(
-        "❌ Erro Brevo API:",
+        "❌ Erro Brevo PEDIDO:",
         err.response?.data || err.message
       );
     }
   });
 });
 
-// ================= SERVIDOR =================
+/* ================= SERVIDOR ================= */
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando na porta ${PORT}`);
