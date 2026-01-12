@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Loja Interna – Desce Lava</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="nav-content">
+    <img src="imagens/Logo.png" class="logo-nav">
+    <span class="nav-title">Loja Virtual Franqueados</span>
+    <button class="btn-admin" onclick="window.location.href='admin.html'">
+      Área Admin
+    </button>
+  </div>
+</nav>
+
+<main class="main-loja">
+
+<section class="sec-loja">
+
+  <div class="produtos">
+
+    <!-- AMACIANTE Soft Plus Express -->
+    <div class="produto">
+      <img src="imagens/SOFT PLUS EXPRESS ROXINHO.jpg">
+      <h3>AMACIANTE SOFT PLUS FRESH  – 20L</h3>
+      <div class="preco-area">
+        <span class="preco">R$ 430,12</span>
+      </div>
+
+      <div class="acoes">
+        <input type="number" id="qtd_amaciantefresh" min="1" value="1">
+        <button onclick="addCart('AMACIANTE SOFT PLUS DESCE LAVA FRESH 20L', 'qtd_amaciantefresh')">
+          Adicionar Carrinho
+        </button>
+      </div>
+    </div>
+
+    <!-- AMACIANTE ROXINHO BREEZE -->
+    <div class="produto">
+      <img src="imagens/SOFT PLUS DESCE LAVA BREEZE.jpg">
+      <h3>AMACIANTE SOFT PLUS BREEZE – 20L</h3>
+
+      <div class="preco-area">
+        <span class="preco">R$ 430,12</span>
+      </div>
+
+      <div class="acoes">
+        <input type="number" id="qtd_amaciantebreeze" min="1" value="1">
+        <button onclick="addCart('AMACIANTE SOFT PLUS DESCE LAVA BREEZE 20L', 'qtd_amaciantebreeze')">
+          Adicionar Carrinho
+        </button>
+      </div>
+    </div>
+
+
+    <!-- CHEIRINHO -->
+    <div class="produto">
+      <img src="imagens/fragrancia.jpeg">
+      <h3> CHEIRINHO PARA TECIDOS E ROUPAS– 5L</h3>
+
+      <div class="preco-area">
+        <span class="preco">R$ 285,17</span>
+      </div>
+
+      <div class="acoes">
+        <input type="number" id="qtd_cheirinho" min="1" value="1">
+        <button onclick="addCart(' CHEIRINHO AROMANTIZANTE - 5L', 'qtd_cheirinho')">
+          Adicionar Carrinho
+        </button>
+      </div>
+    </div>
+
+    <!-- DETERGENTE -->
+    <div class="produto">
+      <img src="imagens/DETERGENTE.jpg">
+      <h3>DETERGENTE CONCETRADO NEUTRO – 20L</h3>
+
+      <div class="preco-area">
+        <span class="preco">R$ 535,52</span>
+      </div>
+
+      <div class="acoes">
+        <input type="number" id="qtd_detergente" min="1" value="1">
+        <button onclick="addCart('DETERGENTE CONCETRADO NEUTRO - 20L', 'qtd_detergente')">
+          Adicionar Carrinho
+        </button>
+      </div>
+    </div>
+
+      <!-- DESIFETANTE NEUT -->
+    <div class="produto">
+      <img src="imagens/DESIFETANTE NEUT.jpeg">
+      <h3> DESIFETANTE PARA TECIDOS DE ROUPAS – 5L</h3>
+
+      <div class="preco-area">
+        <span class="preco">R$ 285,45</span>
+      </div>
+
+      <div class="acoes">
+        <input type="number" id="qtd_desifetanteneut" min="1" value="1">
+        <button onclick="addCart('DESIFETANTE PARA TECIDOS DE ROUPAS', 'qtd_desifetanteneut')">
+          Adicionar Carrinho
+        </button>
+      </div>
+    </div>
+
+        <!-- LIMPADOR DE MAQUINAS-->
+        <div class="produto">
+      <img src="imagens/WASHER JET.jpeg">
+      <h3> LIMPADOR DE MAQUINAS WASHER JET – 5L</h3>
+
+      <div class="preco-area">
+        <span class="preco">R$ 185,45</span>
+      </div>
+
+      <div class="acoes">
+        <input type="number" id="qtd_limpadordemaquinas" min="1" value="1">
+        <button onclick="addCart('LIMPADOR DE MAQUINAS WASHER JET', 'qtd_limpadordemaquinas')">
+          Adicionar Carrinho
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<div class="cart-lateral">
+
+  <h2>Carrinho de Pedido</h2>
+
+  <div id="cart-itens"></div>
+
+  <button class="btn-finalizar" onclick="checkout()">
+    Finalizar Pedido
+  </button>
+
+</div>
+
+</main>
+
+<script>
+
+let cart = [];
+
+function addCart(nome, idInput) {
+  const qtd = document.getElementById(idInput).value;
+
+  cart.push({ nome, quantidade: qtd });
+
+  atualizarCart();
+}
+
+function atualizarCart() {
+  const div = document.getElementById("cart-itens");
+
+  div.innerHTML = "";
+
+  cart.forEach((item, i) => {
+    div.innerHTML += `
+      <div class='item'>
+        ${item.quantidade}x – ${item.nome}
+        <button onclick='remover(${i})'>Remover</button>
+      </div>
+    `;
+  });
+}
+
+function remover(i) {
+ cart.splice(i,1);
+ atualizarCart();
+}
+
+function checkout() {
+  if(cart.length==0){
+    alert("Nenhum produto selecionado!");
+    return;
+  }
+
+  localStorage.setItem("pedido", JSON.stringify(cart));
+
+  window.location.href = "pedido.html";
+}
+
+</script>
+
+</body>
+</html>

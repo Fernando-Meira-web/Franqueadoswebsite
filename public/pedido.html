@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Finalizar Pedido – Desce Lava</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="topo">
+  <img src="imagens/Logo.png" class="logo">
+
+</header>
+
+<main>
+
+<div class="pedido-container">
+
+  <h1>Finalizar Pedido</h1>
+  <p class="subtitulo">Preencha os dados da sua unidade para confirmar o pedido</p>
+
+  <form class="form-pedido" action="/enpostar" method="post">
+
+    <div class="campo">
+      <label>Nome da Unidade</label>
+      <input name="unidade" required>
+    </div>
+
+    <div class="campo">
+      <label>Responsável</label>
+      <input name="responsavel" required>
+    </div>
+
+    <div class="campo">
+      <label>Cidade</label>
+      <input name="cidade" required>
+    </div>
+
+    <div class="campo">
+      <label>Telefone / WhatsApp</label>
+      <input name="telefone" required>
+    </div>
+
+    <div class="campo">
+      <label>E-mail da Unidade</label>
+      <input name="email" type="email" required>
+    </div>
+
+    <div class="campo">
+      <label>Observações do Pedido</label>
+      <textarea name="observacoes" rows="4"
+        placeholder="Ex: enviar junto com as etiquetas da unidade"></textarea>
+    </div>
+
+    <!-- Campo que contém os PRODUTOS DO CARRINHO -->
+    <textarea name="produtos" id="lista_produtos" hidden></textarea>
+
+    <button type="submit" class="btn-enviar">
+      Confirmar Pedido
+    </button>
+
+  </form>
+
+</div>
+
+</main>
+
+<script>
+
+// garante que o servidor está ativo
+console.log("Tela de finalização carregada corretamente");
+
+// recupera os produtos selecionados pelo franqueado
+const pedido = localStorage.getItem("pedido");
+
+if (pedido) {
+  // grava no campo hidden para envio ao backend
+  document.getElementById("lista_produtos").value = pedido;
+} else {
+  alert("Nenhum produto no carrinho. Volte à loja para selecionar.");
+  window.location.href = "index.html";
+}
+
+</script>
+
+</body>
+</html>

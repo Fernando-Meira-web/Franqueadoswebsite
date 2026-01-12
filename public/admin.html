@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Área Administrativa – Desce Lava</title>
+<link rel="stylesheet" href="style.css">
+
+
+</head>
+
+<body>
+
+<div class="admin-wrapper">
+
+<div class="login-admin">
+  <h2>Acesso Administrativo</h2>
+
+  <div class="campo-admin">
+    <label>Usuário</label>
+    <input id="admin_user">
+  </div>
+
+  <div class="campo-admin">
+    <label>Senha</label>
+    <input id="admin_pass" type="password">
+  </div>
+
+  <button class="btn-login-admin" onclick="entrar()">
+    Entrar no Painel
+  </button>
+</div>
+
+<div id="dashboard" class="dashboard" hidden>
+
+  <h1>Pedidos Recebidos</h1>
+
+  <table class="tabela-pedidos">
+    <thead>
+      <tr>
+        <th>Unidade</th>
+        <th>Responsável</th>
+        <th>Cidade</th>
+        <th>Telefone</th>
+        <th>E-mail</th>
+        <th>Observações</th>
+        <th>Produtos</th>
+      </tr>
+    </thead>
+
+    <tbody id="lista"></tbody>
+  </table>
+
+  <button class="btn-exportar" onclick="exportar()">
+    Exportar Pedidos
+  </button>
+
+</div>
+
+</div>
+
+<script>
+
+async function entrar(){
+
+  const user = document.getElementById("admin_user").value;
+  const pass = document.getElementById("admin_pass").value;
+
+  if(user==="DesceLava" && pass==="DesceLava15@"){
+    document.getElementById("dashboard").hidden=false;
+    carregarPedidos();
+  }else{
+    alert("Senha incorreta!");
+  }
+}
+
+async function carregarPedidos(){
+
+  const res = await fetch("data/pedidos.json");
+  const pedidos = await res.json();
+
+  const corpo = document.getElementById("lista");
+
+  corpo.innerHTML="";
+
+  pedidos.forEach(p=>{
+    corpo.innerHTML += `
+      <tr>
+        <td>${p.unidade}</td>
+        <td>${p.responsavel}</td>
+        <td>${p.cidade}</td>
+        <td>${p.telefone}</td>
+        <td>${p.email}</td>
+        <td>${p.observacoes}</td>
+        <td>
+          <div class='pedido-detalhe'>
+            ${p.produtos.map(i=>`${i.quantidade}x ${i.nome}`).join("<br>")}
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function exportar(){
+
+  fetch("data/pedidos.json")
+  .then(r=>r.text())
+  .then(txt=>{
+
+    const blob = new Blob([txt], { type: "application/json" });
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "pedidos_franqueados.json";
+
+    link.click();
+  });
+
+}
+
+</script>
+
+</body>
+</html>

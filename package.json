@@ -1,0 +1,15 @@
+{
+  "name": "franqueadoswebsite",
+  "version": "1.0.0",
+  "description": "Sistema de pedidos Desce Lava",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "body-parser": "^1.20.4",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.1"
+  }
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Pedido Enviado – Desce Lava</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+.sucesso-container {
+  max-width: 600px;
+  margin: 80px auto;
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  text-align: center;
+  color: #102a43;
+}
+
+.sucesso-container h1 {
+  margin-bottom: 15px;
+}
+
+.sucesso-container p {
+  font-size: 16px;
+  margin-bottom: 25px;
+}
+
+.btn-voltar {
+  display: inline-block;
+  padding: 14px 24px;
+  background: #102a43;
+  color: white;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<header class="topo">
+  <img src="imagens/Logo.png" class="logo">
+</header>
+
+<div class="sucesso-container">
+
+  <h1>Pedido enviado com sucesso! ✅</h1>
+
+  <p>
+    Recebemos o seu pedido e ele já foi encaminhado para a equipe Desce Lava.
+    Em breve entraremos em contato para confirmação e próximos passos.
+  </p>
+
+  <a href="index.html" class="btn-voltar">
+    Voltar para a Loja
+  </a>
+
+</div>
+
+<script>
+// limpa o carrinho após envio
+localStorage.removeItem("pedido");
+</script>
+
+</body>
+</html>
