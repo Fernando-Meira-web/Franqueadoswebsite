@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Loja Franqueados – Desce Lava</title>
-<link rel="icon" type="image/png" href="imagens/logo.png">
+<link rel="icon" type="image/png" href="imagens/Simbolo4.PNG">
 <link rel="stylesheet" href="/style.css?v=1">
 
 </head>
 
 <body>
-<link rel="icon" type="image/png" href="imagens/logo.png">
+<link rel="icon" type="image/png" href="imagens/Simbolo4.PNG">
 <nav class="navbar">
   <div class="nav-content">
     <img src="imagens/Logo.png" class="logo-nav">
@@ -128,6 +128,59 @@
       </div>
     </div>
 
+    <!-- MAYTAG -->
+        <div class="produto">
+      <img src="imagens/conjunto-maytag.jpg">
+      <h3>  </h3>
+
+      <div class="preco-area">
+        <span class="preco">R$ 00,00</span>
+      </div>
+
+      <div class="acoes">
+        <input type="number" id="qtd_maytag" min="1" value="1">
+        <button onclick="addCart('  ', 'qtd_maytag')">
+          Adicionar Carrinho
+        </button>
+      </div>
+    </div>
+
+    <!-- SPEED QUEEN-->
+        <div class="produto">
+      <img src="imagens/Speed queen.png">
+      <h3>   </h3>
+
+      <div class="preco-area">
+        <span class="preco">R$ 00,00</span>
+      </div>
+
+      <div class="acoes">
+        <input type="number" id="qtd_speedqueen" min="1" value="1">
+        <button onclick="addCart('  ', 'qtd_speedqueen')">
+          Adicionar Carrinho
+        </button>
+      </div>
+    </div>
+
+    <!-- OASIS-->
+        <div class="produto">
+      <img src="imagens/Oasis.jpg">
+      <h3>    </h3>
+
+      <div class="preco-area">
+        <span class="preco">R$ 00,00</span>
+      </div>
+
+      <div class="acoes">
+        <input type="number" id="qtd_oasis" min="1" value="1">
+        <button onclick="addCart('  ', 'qtd_oasis')">
+          Adicionar Carrinho
+        </button>
+      </div>
+    </div>
+
+
+
   </div>
 
 </section>
@@ -149,26 +202,39 @@
 <script>
 let cart = [];
 
+// TABELA DE PREÇOS (fixos, como você confirmou)
+const PREÇOS = {
+  "AMACIANTE SOFT PLUS DESCE LAVA FRESH 20L": 430.12,
+  "AMACIANTE SOFT PLUS DESCE LAVA BREEZE 20L": 430.12,
+  " CHEIRINHO AROMANTIZANTE - 5L": 285.17,
+  "DETERGENTE CONCETRADO NEUTRO - 20L": 535.52,
+  "DESIFETANTE PARA TECIDOS DE ROUPAS": 285.45,
+  "LIMPADOR DE MAQUINAS WASHER JET": 185.45
+};
+
 function addCart(nome, idInput) {
   const qtdInput = document.getElementById(idInput);
   const qtd = parseInt(qtdInput.value);
 
   if (qtd <= 0) return;
 
-  // Verifica se o produto já existe no carrinho
+  const preco = PREÇOS[nome] || 0;
+
   const itemExistente = cart.find(item => item.nome === nome);
 
   if (itemExistente) {
-    // Soma a quantidade
     itemExistente.quantidade += qtd;
+    itemExistente.subtotal = itemExistente.quantidade * preco;
   } else {
-    // Adiciona novo produto
-    cart.push({ nome, quantidade: qtd });
+    cart.push({
+      nome,
+      quantidade: qtd,
+      preco,
+      subtotal: qtd * preco
+    });
   }
 
-  // Reseta input para 1 (boa UX)
   qtdInput.value = 1;
-
   atualizarCart();
 }
 
@@ -176,14 +242,27 @@ function atualizarCart() {
   const div = document.getElementById("cart-itens");
   div.innerHTML = "";
 
+  let total = 0;
+
   cart.forEach((item, i) => {
+    total += item.subtotal;
+
     div.innerHTML += `
       <div class="item">
-        <strong>${item.quantidade}x</strong> – ${item.nome}
+        <strong>${item.quantidade}x</strong> – ${item.nome}<br>
+        <small>R$ ${item.subtotal.toFixed(2).replace(".", ",")}</small>
         <button onclick="remover(${i})">Remover</button>
       </div>
     `;
   });
+
+  if (cart.length > 0) {
+    div.innerHTML += `
+      <div class="item">
+        <strong>Total:</strong> R$ ${total.toFixed(2).replace(".", ",")}
+      </div>
+    `;
+  }
 }
 
 function remover(i) {
@@ -201,6 +280,7 @@ function checkout() {
   window.location.href = "pedido.html";
 }
 </script>
+
 
 
 </body>

@@ -17,6 +17,16 @@ const ARQUIVO = `${DATA_DIR}/pedidos.json`;
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 if (!fs.existsSync(ARQUIVO)) fs.writeFileSync(ARQUIVO, "[]");
 
+/* ================= TABELA DE PREÇOS (NOVO - NECESSÁRIO) ================= */
+const PRECOS = {
+  "AMACIANTE SOFT PLUS DESCE LAVA FRESH 20L": 430.12,
+  "AMACIANTE SOFT PLUS DESCE LAVA BREEZE 20L": 430.12,
+  " CHEIRINHO AROMANTIZANTE - 5L": 285.17,
+  "DETERGENTE CONCETRADO NEUTRO - 20L": 535.52,
+  "DESIFETANTE PARA TECIDOS DE ROUPAS": 285.45,
+  "LIMPADOR DE MAQUINAS WASHER JET": 185.45
+};
+
 /* ================= ENVIAR PEDIDO ================= */
 app.post("/enpostar", (req, res) => {
 
@@ -24,6 +34,25 @@ app.post("/enpostar", (req, res) => {
   try {
     produtos = JSON.parse(req.body.produtos || "[]");
   } catch {}
+
+  /* ===== AQUI É A CORREÇÃO REAL ===== */
+  const produtosComValor = produtos.map(p => {
+  const nomeLimpo = p.nome.trim(); // <<< AQUI ESTÁ A CHAVE
+  const preco = PRECOS[nomeLimpo] || 0;
+
+  return {
+    ...p,
+    nome: nomeLimpo, // padroniza também no pedido
+    preco,
+    subtotal: preco * p.quantidade
+  };
+});
+
+
+  const total = produtosComValor.reduce(
+    (soma, p) => soma + p.subtotal,
+    0
+  );
 
   const pedido = {
     id: Date.now(),
@@ -33,9 +62,11 @@ app.post("/enpostar", (req, res) => {
     telefone: req.body.telefone,
     email: req.body.email,
     observacoes: req.body.observacoes || "",
-    produtos,
+    produtos: produtosComValor,
+    total,
     data: new Date().toLocaleString("pt-BR")
   };
+  /* ===== FIM DA CORREÇÃO ===== */
 
   const pedidos = JSON.parse(fs.readFileSync(ARQUIVO, "utf8"));
   pedidos.push(pedido);
@@ -46,7 +77,7 @@ app.post("/enpostar", (req, res) => {
   enviarEmailBonito(pedido);
 });
 
-/* ================= EMAIL BONITO (IGUAL ANTES) ================= */
+/* ================= EMAIL BONITO (IGUAL ANTES, AGORA COM TOTAL) ================= */
 async function enviarEmailBonito(pedido) {
   try {
     await axios.post(
@@ -62,62 +93,65 @@ async function enviarEmailBonito(pedido) {
 <!DOCTYPE html>
 <html>
 <body style="margin:0;padding:0;background:#f2f2f2;font-family:Arial">
-  <table width="100%" cellpadding="0" cellspacing="0">
-    <tr>
-      <td align="center" style="padding:30px">
+<table width="100%">
+<tr><td align="center" style="padding:30px">
 
-        <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:8px;overflow:hidden">
-          
-          <tr>
-            <td style="background:#0a7cff;color:#fff;padding:20px">
-              <h2 style="margin:0">📦 Novo Pedido Recebido</h2>
-            </td>
-          </tr>
+<table width="600" style="background:#fff;border-radius:8px">
+<tr>
+<td style="background:#0a7cff;color:#fff;padding:20px">
+<h2>📦 Novo Pedido Recebido</h2>
+</td>
+</tr>
 
-          <tr>
-            <td style="padding:20px;color:#333">
-              <p><strong>Unidade:</strong> ${pedido.unidade}</p>
-              <p><strong>Responsável:</strong> ${pedido.responsavel}</p>
-              <p><strong>Cidade:</strong> ${pedido.cidade}</p>
-              <p><strong>Telefone:</strong> ${pedido.telefone}</p>
-              <p><strong>Email:</strong> ${pedido.email}</p>
+<tr>
+<td style="padding:20px">
+<p><strong>Unidade:</strong> ${pedido.unidade}</p>
+<p><strong>Responsável:</strong> ${pedido.responsavel}</p>
+<p><strong>Cidade:</strong> ${pedido.cidade}</p>
+<p><strong>Telefone:</strong> ${pedido.telefone}</p>
 
-              <h3 style="margin-top:30px">🧺 Produtos</h3>
+<h3>🧺 Produtos</h3>
 
-              <table width="100%" border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse">
-                <tr style="background:#f0f0f0">
-                  <th align="left">Produto</th>
-                  <th align="center">Qtd</th>
-                </tr>
-                ${pedido.produtos.map(p => `
-                  <tr>
-                    <td>${p.nome}</td>
-                    <td align="center">${p.quantidade}</td>
-                  </tr>
-                `).join("")}
-              </table>
+<table width="100%" border="1" cellpadding="8" cellspacing="0">
+<tr style="background:#eee">
+<th>Produto</th>
+<th>Qtd</th>
+<th>Subtotal</th>
+</tr>
 
-              <p style="margin-top:20px">
-                <strong>Observações:</strong><br>
-                ${pedido.observacoes || "—"}
-              </p>
-            </td>
-          </tr>
+${pedido.produtos.map(p => `
+<tr>
+<td>${p.nome}</td>
+<td align="center">${p.quantidade}</td>
+<td align="right">
+R$ ${p.subtotal.toFixed(2).replace(".", ",")}
+</td>
+</tr>
+`).join("")}
 
-          <tr>
-            <td style="background:#f7f7f7;padding:15px;text-align:center;font-size:12px;color:#777">
-              Desce Lava • Sistema de Pedidos
-            </td>
-          </tr>
+</table>
 
-        </table>
+<h3 style="margin-top:20px">
+💰 Total do Pedido: R$ ${pedido.total.toFixed(2).replace(".", ",")}
+</h3>
 
-      </td>
-    </tr>
-  </table>
+<p><strong>Observações:</strong><br>${pedido.observacoes || "—"}</p>
+</td>
+</tr>
+
+<tr>
+<td style="background:#f7f7f7;padding:15px;text-align:center;font-size:12px">
+Desce Lava • Sistema de Pedidos
+</td>
+</tr>
+
+</table>
+
+</td></tr>
+</table>
 </body>
 </html>
-        `
+`
       },
       {
         headers: {
@@ -126,6 +160,7 @@ async function enviarEmailBonito(pedido) {
         }
       }
     );
+
   } catch (err) {
     console.error("Erro email:", err.response?.data || err.message);
   }
