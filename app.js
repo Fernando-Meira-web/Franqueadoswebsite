@@ -7,83 +7,26 @@ const axios = require("axios");
 
 const app = express();
 
-/* ================= DEBUG INICIAL ================= */
-console.log("🔑 BREVO_API_KEY existe?", !!process.env.BREVO_API_KEY);
-console.log("📧 EMAIL_RECEBER:", process.env.EMAIL_RECEBER);
-console.log("🌐 PORT recebida:", process.env.PORT);
-
-/* ================= MIDDLEWARES ================= */
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
 
-/* ================= ARQUIVO DE PEDIDOS ================= */
 const DATA_DIR = "public/data";
 const ARQUIVO = `${DATA_DIR}/pedidos.json`;
 
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-}
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+if (!fs.existsSync(ARQUIVO)) fs.writeFileSync(ARQUIVO, "[]");
 
-if (!fs.existsSync(ARQUIVO)) {
-  fs.writeFileSync(ARQUIVO, "[]");
-}
-
-/* ================= ROTA BASE ================= */
-app.get("/", (req, res) => {
-  res.send("API Desce Lava - Online 🚀");
-});
-
-/* ================= ROTA TESTE BREVO (ISOLADA) ================= */
-app.get("/teste-brevo", async (req, res) => {
-  try {
-    const response = await axios.post(
-      "https://api.brevo.com/v3/smtp/email",
-      {
-        sender: {
-          name: "Teste Desce Lava",
-          email: "no-reply@descelava.com.br"
-        },
-        to: [
-          {
-            email: process.env.EMAIL_RECEBER,
-            name: "Admin"
-          }
-        ],
-        subject: "✅ Teste Brevo Funcionando",
-        htmlContent: "<p>Email de teste enviado com sucesso.</p>"
-      },
-      {
-        headers: {
-          "api-key": process.env.BREVO_API_KEY,
-          "accept": "application/json",
-          "Content-Type": "application/json"
-        }
-      }
-    );
-
-    console.log("📧 Teste Brevo enviado com sucesso");
-    res.json(response.data);
-  } catch (err) {
-    console.error(
-      "❌ Erro Brevo TESTE:",
-      err.response?.data || err.message
-    );
-    res.status(500).json(err.response?.data || err.message);
-  }
-});
-
-/* ================= ROTA DE PEDIDO ================= */
+/* ================= ENVIAR PEDIDO ================= */
 app.post("/enpostar", (req, res) => {
-  let produtos = [];
 
+  let produtos = [];
   try {
     produtos = JSON.parse(req.body.produtos || "[]");
-  } catch {
-    produtos = [];
-  }
+  } catch {}
 
   const pedido = {
+    id: Date.now(),
     unidade: req.body.unidade,
     responsavel: req.body.responsavel,
     cidade: req.body.cidade,
@@ -94,69 +37,115 @@ app.post("/enpostar", (req, res) => {
     data: new Date().toLocaleString("pt-BR")
   };
 
-  /* salva pedido */
   const pedidos = JSON.parse(fs.readFileSync(ARQUIVO, "utf8"));
   pedidos.push(pedido);
   fs.writeFileSync(ARQUIVO, JSON.stringify(pedidos, null, 2));
 
-  /* responde rápido ao usuário */
   res.redirect("sucesso.html");
 
-  /* ================= EMAIL BREVO ================= */
-  setImmediate(async () => {
-    try {
-      await axios.post(
-        "https://api.brevo.com/v3/smtp/email",
-        {
-          sender: {
-            name: "Pedidos Desce Lava",
-            email: "no-reply@descelava.com.br"
-          },
-          to: [
-            {
-              email: process.env.EMAIL_RECEBER,
-              name: "Admin Desce Lava"
-            }
-          ],
-          subject: `🧾 Novo Pedido - ${pedido.unidade}`,
-          htmlContent: `
-            <h2>Novo Pedido Recebido</h2>
-            <p><b>Unidade:</b> ${pedido.unidade}</p>
-            <p><b>Responsável:</b> ${pedido.responsavel}</p>
-            <p><b>Cidade:</b> ${pedido.cidade}</p>
-            <p><b>Telefone:</b> ${pedido.telefone}</p>
+  enviarEmailBonito(pedido);
+});
 
-            <h3>Produtos</h3>
-            <ul>
-              ${produtos
-                .map(p => `<li>${p.nome} - ${p.quantidade}</li>`)
-                .join("")}
-            </ul>
-
-            <p><b>Observações:</b> ${pedido.observacoes}</p>
-          `
+/* ================= EMAIL BONITO (IGUAL ANTES) ================= */
+async function enviarEmailBonito(pedido) {
+  try {
+    await axios.post(
+      "https://api.brevo.com/v3/smtp/email",
+      {
+        sender: {
+          name: "Pedidos Desce Lava",
+          email: "no-reply@descelava.com.br"
         },
-        {
-          headers: {
-            "api-key": process.env.BREVO_API_KEY,
-            "accept": "application/json",
-            "Content-Type": "application/json"
-          }
-        }
-      );
+        to: [{ email: process.env.EMAIL_RECEBER }],
+        subject: `🧾 Novo Pedido – ${pedido.unidade}`,
+        htmlContent: `
+<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:0;background:#f2f2f2;font-family:Arial">
+  <table width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+      <td align="center" style="padding:30px">
 
-      console.log("📧 Email do pedido enviado via Brevo");
-    } catch (err) {
-      console.error(
-        "❌ Erro Brevo PEDIDO:",
-        err.response?.data || err.message
-      );
-    }
-  });
+        <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:8px;overflow:hidden">
+          
+          <tr>
+            <td style="background:#0a7cff;color:#fff;padding:20px">
+              <h2 style="margin:0">📦 Novo Pedido Recebido</h2>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:20px;color:#333">
+              <p><strong>Unidade:</strong> ${pedido.unidade}</p>
+              <p><strong>Responsável:</strong> ${pedido.responsavel}</p>
+              <p><strong>Cidade:</strong> ${pedido.cidade}</p>
+              <p><strong>Telefone:</strong> ${pedido.telefone}</p>
+              <p><strong>Email:</strong> ${pedido.email}</p>
+
+              <h3 style="margin-top:30px">🧺 Produtos</h3>
+
+              <table width="100%" border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse">
+                <tr style="background:#f0f0f0">
+                  <th align="left">Produto</th>
+                  <th align="center">Qtd</th>
+                </tr>
+                ${pedido.produtos.map(p => `
+                  <tr>
+                    <td>${p.nome}</td>
+                    <td align="center">${p.quantidade}</td>
+                  </tr>
+                `).join("")}
+              </table>
+
+              <p style="margin-top:20px">
+                <strong>Observações:</strong><br>
+                ${pedido.observacoes || "—"}
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="background:#f7f7f7;padding:15px;text-align:center;font-size:12px;color:#777">
+              Desce Lava • Sistema de Pedidos
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+        `
+      },
+      {
+        headers: {
+          "api-key": process.env.BREVO_API_KEY,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+  } catch (err) {
+    console.error("Erro email:", err.response?.data || err.message);
+  }
+}
+
+/* ================= APAGAR PEDIDOS SELECIONADOS ================= */
+app.post("/admin/apagar-pedidos", (req, res) => {
+  try {
+    const ids = req.body.ids || [];
+    const pedidos = JSON.parse(fs.readFileSync(ARQUIVO, "utf8"));
+    const filtrados = pedidos.filter(p => !ids.includes(p.id));
+    fs.writeFileSync(ARQUIVO, JSON.stringify(filtrados, null, 2));
+    res.json({ ok: true });
+  } catch {
+    res.status(500).json({ ok: false });
+  }
 });
 
 /* ================= SERVIDOR ================= */
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando na porta ${PORT}`);
+  console.log("🚀 Servidor rodando na porta", PORT);
 });

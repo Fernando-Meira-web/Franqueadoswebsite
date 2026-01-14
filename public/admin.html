@@ -3,70 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <title>Área Administrativa – Desce Lava</title>
+
 <link rel="stylesheet" href="style.css">
 
-
+<!-- LIBS PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
 </head>
 
 <body>
 
 <div class="admin-wrapper">
 
-<div class="login-admin">
-  <h2>Acesso Administrativo</h2>
+  <!-- LOGIN (INALTERADO) -->
+  <div class="login-admin">
+    <h2>Acesso Administrativo</h2>
 
-  <div class="campo-admin">
-    <label>Usuário</label>
-    <input id="admin_user">
+    <div class="campo-admin">
+      <label>Usuário</label>
+      <input id="admin_user">
+    </div>
+
+    <div class="campo-admin">
+      <label>Senha</label>
+      <input id="admin_pass" type="password">
+    </div>
+
+    <button class="btn-login-admin" onclick="entrar()">
+      Entrar no Painel
+    </button>
   </div>
 
-  <div class="campo-admin">
-    <label>Senha</label>
-    <input id="admin_pass" type="password">
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="dashboard" hidden>
+
+    <h1>Pedidos Recebidos</h1>
+
+    <table class="tabela-pedidos">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Unidade</th>
+          <th>Responsável</th>
+          <th>Cidade</th>
+          <th>Telefone</th>
+          <th>E-mail</th>
+          <th>Observações</th>
+          <th>Produtos</th>
+        </tr>
+      </thead>
+
+      <tbody id="lista"></tbody>
+    </table>
+
+    <div style="margin-top:20px;text-align:center">
+      <button class="btn-exportar" onclick="exportarPDF()">
+        Exportar PDF
+      </button>
+
+      <button
+        class="btn-exportar"
+        onclick="apagarSelecionados()"
+        style="background:#d9534f;color:white;margin-left:10px;"
+      >
+        Apagar Selecionados
+      </button>
+    </div>
+
   </div>
-
-  <button class="btn-login-admin" onclick="entrar()">
-    Entrar no Painel
-  </button>
-</div>
-
-<div id="dashboard" class="dashboard" hidden>
-
-  <h1>Pedidos Recebidos</h1>
-
-  <table class="tabela-pedidos">
-    <thead>
-      <tr>
-        <th>Unidade</th>
-        <th>Responsável</th>
-        <th>Cidade</th>
-        <th>Telefone</th>
-        <th>E-mail</th>
-        <th>Observações</th>
-        <th>Produtos</th>
-      </tr>
-    </thead>
-
-    <tbody id="lista"></tbody>
-  </table>
-
-  <button class="btn-exportar" onclick="exportar()">
-    Exportar Pedidos
-  </button>
-
-</div>
 
 </div>
 
 <script>
+let pedidosCache = [];
 
 async function entrar(){
-
   const user = document.getElementById("admin_user").value;
   const pass = document.getElementById("admin_pass").value;
 
   if(user==="DesceLava" && pass==="DesceLava15@"){
-    document.getElementById("dashboard").hidden=false;
+    document.querySelector(".login-admin").style.display = "none";
+    document.getElementById("dashboard").hidden = false;
     carregarPedidos();
   }else{
     alert("Senha incorreta!");
@@ -74,17 +91,18 @@ async function entrar(){
 }
 
 async function carregarPedidos(){
-
   const res = await fetch("data/pedidos.json");
-  const pedidos = await res.json();
+  pedidosCache = await res.json();
 
   const corpo = document.getElementById("lista");
+  corpo.innerHTML = "";
 
-  corpo.innerHTML="";
-
-  pedidos.forEach(p=>{
+  pedidosCache.forEach(p=>{
     corpo.innerHTML += `
       <tr>
+        <td>
+          <input type="checkbox" value="${p.id}">
+        </td>
         <td>${p.unidade}</td>
         <td>${p.responsavel}</td>
         <td>${p.cidade}</td>
@@ -92,7 +110,7 @@ async function carregarPedidos(){
         <td>${p.email}</td>
         <td>${p.observacoes}</td>
         <td>
-          <div class='pedido-detalhe'>
+          <div class="pedido-detalhe">
             ${p.produtos.map(i=>`${i.quantidade}x ${i.nome}`).join("<br>")}
           </div>
         </td>
@@ -101,23 +119,83 @@ async function carregarPedidos(){
   });
 }
 
-function exportar(){
+/* ================= EXPORTAR PDF ================= */
+function exportarPDF(){
 
-  fetch("data/pedidos.json")
-  .then(r=>r.text())
-  .then(txt=>{
+  if(pedidosCache.length === 0){
+    alert("Não há pedidos para exportar.");
+    return;
+  }
 
-    const blob = new Blob([txt], { type: "application/json" });
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("p", "mm", "a4");
 
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "pedidos_franqueados.json";
+  doc.setFontSize(16);
+  doc.text("Pedidos – Franqueados Desce Lava", 14, 15);
 
-    link.click();
+  const rows = pedidosCache.map(p => [
+    p.unidade,
+    p.responsavel,
+    p.cidade,
+    p.telefone,
+    p.email,
+    p.produtos.map(i=>`${i.quantidade}x ${i.nome}`).join(", ")
+  ]);
+
+  doc.autoTable({
+    startY: 25,
+    head: [[
+      "Unidade",
+      "Responsável",
+      "Cidade",
+      "Telefone",
+      "Email",
+      "Produtos"
+    ]],
+    body: rows,
+    styles: {
+      fontSize: 8,
+      cellPadding: 3
+    },
+    headStyles: {
+      fillColor: [16, 42, 67],
+      textColor: 255
+    },
+    alternateRowStyles: {
+      fillColor: [245, 245, 245]
+    }
   });
 
+  doc.save("pedidos-franqueados.pdf");
 }
 
+/* ================= APAGAR SELECIONADOS ================= */
+async function apagarSelecionados(){
+  const checks = document.querySelectorAll("input[type=checkbox]:checked");
+
+  if(checks.length === 0){
+    alert("Selecione pelo menos um pedido.");
+    return;
+  }
+
+  if(!confirm("Deseja apagar os pedidos selecionados?")) return;
+
+  const ids = Array.from(checks).map(c => Number(c.value));
+
+  const res = await fetch("/admin/apagar-pedidos", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ids })
+  });
+
+  const data = await res.json();
+
+  if(data.ok){
+    carregarPedidos();
+  }else{
+    alert("Erro ao apagar pedidos.");
+  }
+}
 </script>
 
 </body>

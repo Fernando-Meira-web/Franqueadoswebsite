@@ -147,49 +147,61 @@
 </main>
 
 <script>
-
 let cart = [];
 
 function addCart(nome, idInput) {
-  const qtd = document.getElementById(idInput).value;
+  const qtdInput = document.getElementById(idInput);
+  const qtd = parseInt(qtdInput.value);
 
-  cart.push({ nome, quantidade: qtd });
+  if (qtd <= 0) return;
+
+  // Verifica se o produto já existe no carrinho
+  const itemExistente = cart.find(item => item.nome === nome);
+
+  if (itemExistente) {
+    // Soma a quantidade
+    itemExistente.quantidade += qtd;
+  } else {
+    // Adiciona novo produto
+    cart.push({ nome, quantidade: qtd });
+  }
+
+  // Reseta input para 1 (boa UX)
+  qtdInput.value = 1;
 
   atualizarCart();
 }
 
 function atualizarCart() {
   const div = document.getElementById("cart-itens");
-
   div.innerHTML = "";
 
   cart.forEach((item, i) => {
     div.innerHTML += `
-      <div class='item'>
-        ${item.quantidade}x – ${item.nome}
-        <button onclick='remover(${i})'>Remover</button>
+      <div class="item">
+        <strong>${item.quantidade}x</strong> – ${item.nome}
+        <button onclick="remover(${i})">Remover</button>
       </div>
     `;
   });
 }
 
 function remover(i) {
- cart.splice(i,1);
- atualizarCart();
+  cart.splice(i, 1);
+  atualizarCart();
 }
 
 function checkout() {
-  if(cart.length==0){
+  if (cart.length === 0) {
     alert("Nenhum produto selecionado!");
     return;
   }
 
   localStorage.setItem("pedido", JSON.stringify(cart));
-
   window.location.href = "pedido.html";
 }
-
 </script>
+
 
 </body>
 </html>

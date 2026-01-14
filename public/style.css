@@ -330,3 +330,92 @@ table.tabela-pedidos td {
   cursor: pointer;
   font-weight: bold;
 }
+
+/* ===================================================
+   CORREÇÃO DE LAYOUT — ÁREA ADMIN (ISOLADA)
+   NÃO AFETA A LOJA
+=================================================== */
+
+/* Garante que o admin não herde o tema escuro */
+.admin-wrapper,
+.login-admin,
+.dashboard {
+  background: transparent;
+  color: #102a43;
+}
+
+/* LOGIN ADMIN */
+.login-admin {
+  background: #ffffff;
+  max-width: 420px;
+  margin: 80px auto;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.login-admin h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #102a43;
+}
+
+.campo-admin label {
+  color: #102a43;
+}
+
+.campo-admin input {
+  background: #ffffff;
+  color: #102a43;
+  border: 1px solid #ccc;
+}
+
+.btn-login-admin {
+  background: #102a43;
+  color: #ffffff;
+}
+
+/* DASHBOARD */
+.dashboard {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+/* TABELA DO ADMIN */
+.dashboard table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dashboard th {
+  background: #102a43;
+  color: #ffffff;
+  padding: 12px;
+}
+
+.dashboard td {
+  background: #ffffff;
+  color: #102a43;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* CHECKBOX */
+.dashboard input[type="checkbox"] {
+  transform: scale(1.2);
+}
+
+/* BOTÕES DO ADMIN */
+.btn-exportar,
+.btn-apagar {
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-weight: bold;
+}
+
+.btn-apagar {
+  background: #d9534f;
+  color: #ffffff;
+}
