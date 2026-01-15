@@ -45,25 +45,7 @@
     "data": "14/01/2026, 10:15:32"
   },
   {
-    "id": 1768400200774,
-    "unidade": "teste",
-    "responsavel": "teste",
-    "cidade": "teste",
-    "telefone": "teste",
-    "email": "teste@gmail.com",
-    "observacoes": "teste",
-    "produtos": [
-      {
-        "nome": "AMACIANTE SOFT PLUS DESCE LAVA BREEZE 20L",
-        "quantidade": 5,
-        "preco": 430.12,
-        "subtotal": 2150.6
-      }
-    ],
-    "data": "14/01/2026, 10:16:40"
-  },
-  {
-    "id": 1768400452719,
+    "id": 1768413512254,
     "unidade": "teste",
     "responsavel": "teste",
     "cidade": "teste",
@@ -76,56 +58,8 @@
         "quantidade": 2,
         "preco": 430.12,
         "subtotal": 860.24
-      },
-      {
-        "nome": "AMACIANTE SOFT PLUS DESCE LAVA BREEZE 20L",
-        "quantidade": 1,
-        "preco": 430.12,
-        "subtotal": 430.12
-      },
-      {
-        "nome": " CHEIRINHO AROMANTIZANTE - 5L",
-        "quantidade": 1,
-        "preco": 285.17,
-        "subtotal": 285.17
       }
     ],
-    "data": "14/01/2026, 10:20:52"
-  },
-  {
-    "id": 1768401189544,
-    "unidade": "teste",
-    "responsavel": "teste",
-    "cidade": "teste",
-    "telefone": "teste",
-    "email": "teste@gmail.com",
-    "observacoes": "teste",
-    "produtos": [
-      {
-        "nome": "AMACIANTE SOFT PLUS DESCE LAVA FRESH 20L",
-        "quantidade": 3,
-        "preco": 430.12,
-        "subtotal": 1290.3600000000001
-      }
-    ],
-    "data": "14/01/2026, 10:33:09"
-  },
-  {
-    "id": 1768401231887,
-    "unidade": "teste",
-    "responsavel": "teste",
-    "cidade": "teste",
-    "telefone": "teste",
-    "email": "teste@gmail.com",
-    "observacoes": "teste",
-    "produtos": [
-      {
-        "nome": "AMACIANTE SOFT PLUS DESCE LAVA FRESH 20L",
-        "quantidade": 3,
-        "preco": 430.12,
-        "subtotal": 1290.3600000000001
-      }
-    ],
-    "data": "14/01/2026, 10:33:51"
+    "data": "14/01/2026, 13:58:32"
   }
 ]

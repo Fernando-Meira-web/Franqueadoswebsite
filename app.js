@@ -17,15 +17,29 @@ const ARQUIVO = `${DATA_DIR}/pedidos.json`;
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 if (!fs.existsSync(ARQUIVO)) fs.writeFileSync(ARQUIVO, "[]");
 
-/* ================= TABELA DE PREÇOS (NOVO - NECESSÁRIO) ================= */
+/* ================= TABELA DE PREÇOS ================= */
 const PRECOS = {
   "AMACIANTE SOFT PLUS DESCE LAVA FRESH 20L": 430.12,
   "AMACIANTE SOFT PLUS DESCE LAVA BREEZE 20L": 430.12,
   " CHEIRINHO AROMANTIZANTE - 5L": 285.17,
   "DETERGENTE CONCETRADO NEUTRO - 20L": 535.52,
   "DESIFETANTE PARA TECIDOS DE ROUPAS": 285.45,
-  "LIMPADOR DE MAQUINAS WASHER JET": 185.45
+  "LIMPADOR DE MAQUINAS WASHER JET": 185.45,
+
+  " CONJUNTO MAYTEG ": 0,
+  " CONJUNTO SPEED QUEEN ": 29434.00,
+  " CONJUNTO OASIS 20KL ": 69990.00,
+  " CONJUNTO OASIS 15KL ": 64990.00,
+  " CONJUNTO OASIS 10KL ": 37990.00
 };
+
+/* ================= FORMATAR MOEDA ================= */
+function formatarMoeda(valor) {
+  return valor.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
+}
 
 /* ================= ENVIAR PEDIDO ================= */
 app.post("/enpostar", (req, res) => {
@@ -35,19 +49,17 @@ app.post("/enpostar", (req, res) => {
     produtos = JSON.parse(req.body.produtos || "[]");
   } catch {}
 
-  /* ===== AQUI É A CORREÇÃO REAL ===== */
   const produtosComValor = produtos.map(p => {
-  const nomeLimpo = p.nome.trim(); // <<< AQUI ESTÁ A CHAVE
-  const preco = PRECOS[nomeLimpo] || 0;
+    const nomeLimpo = p.nome.trim();
+    const preco = PRECOS[nomeLimpo] || 0;
 
-  return {
-    ...p,
-    nome: nomeLimpo, // padroniza também no pedido
-    preco,
-    subtotal: preco * p.quantidade
-  };
-});
-
+    return {
+      ...p,
+      nome: nomeLimpo,
+      preco,
+      subtotal: preco * p.quantidade
+    };
+  });
 
   const total = produtosComValor.reduce(
     (soma, p) => soma + p.subtotal,
@@ -66,7 +78,6 @@ app.post("/enpostar", (req, res) => {
     total,
     data: new Date().toLocaleString("pt-BR")
   };
-  /* ===== FIM DA CORREÇÃO ===== */
 
   const pedidos = JSON.parse(fs.readFileSync(ARQUIVO, "utf8"));
   pedidos.push(pedido);
@@ -77,7 +88,7 @@ app.post("/enpostar", (req, res) => {
   enviarEmailBonito(pedido);
 });
 
-/* ================= EMAIL BONITO (IGUAL ANTES, AGORA COM TOTAL) ================= */
+/* ================= EMAIL BONITO ================= */
 async function enviarEmailBonito(pedido) {
   try {
     await axios.post(
@@ -123,16 +134,14 @@ ${pedido.produtos.map(p => `
 <tr>
 <td>${p.nome}</td>
 <td align="center">${p.quantidade}</td>
-<td align="right">
-R$ ${p.subtotal.toFixed(2).replace(".", ",")}
-</td>
+<td align="right">${formatarMoeda(p.subtotal)}</td>
 </tr>
 `).join("")}
 
 </table>
 
 <h3 style="margin-top:20px">
-💰 Total do Pedido: R$ ${pedido.total.toFixed(2).replace(".", ",")}
+💰 Total do Pedido: ${formatarMoeda(pedido.total)}
 </h3>
 
 <p><strong>Observações:</strong><br>${pedido.observacoes || "—"}</p>
