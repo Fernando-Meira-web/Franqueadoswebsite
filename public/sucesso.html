@@ -64,6 +64,14 @@
 </div>
 
 <script>
+    
+    function formatarMoeda(valor) {
+  return valor.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
+}
+
 // limpa o carrinho após envio
 localStorage.removeItem("pedido");
 </script>

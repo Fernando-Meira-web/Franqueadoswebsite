@@ -21,16 +21,16 @@ if (!fs.existsSync(ARQUIVO)) fs.writeFileSync(ARQUIVO, "[]");
 const PRECOS = {
   "AMACIANTE SOFT PLUS DESCE LAVA FRESH 20L": 430.12,
   "AMACIANTE SOFT PLUS DESCE LAVA BREEZE 20L": 430.12,
-  " CHEIRINHO AROMANTIZANTE - 5L": 285.17,
+  "CHEIRINHO AROMANTIZANTE - 5L": 285.17,
   "DETERGENTE CONCETRADO NEUTRO - 20L": 535.52,
   "DESIFETANTE PARA TECIDOS DE ROUPAS": 285.45,
   "LIMPADOR DE MAQUINAS WASHER JET": 185.45,
 
-  " CONJUNTO MAYTEG ": 0,
-  " CONJUNTO SPEED QUEEN ": 29434.00,
-  " CONJUNTO OASIS 20KL ": 69990.00,
-  " CONJUNTO OASIS 15KL ": 64990.00,
-  " CONJUNTO OASIS 10KL ": 37990.00
+  "CONJUNTO MAYTAG": 29435.00,
+  "CONJUNTO SPEED QUEEN": 29434.00,
+  "CONJUNTO OASIS 20KL": 69990.00,
+  "CONJUNTO OASIS 15KL": 64990.00,
+  "CONJUNTO OASIS 10KL": 37990.00
 };
 
 /* ================= FORMATAR MOEDA ================= */
@@ -51,7 +51,9 @@ app.post("/enpostar", (req, res) => {
 
   const produtosComValor = produtos.map(p => {
     const nomeLimpo = p.nome.trim();
-    const preco = PRECOS[nomeLimpo] || 0;
+const preco = PRECOS[nomeLimpo] || 0;
+
+
 
     return {
       ...p,
@@ -193,3 +195,7 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log("🚀 Servidor rodando na porta", PORT);
 });
+
+
+/* ================= TESTE GMAIL ================= */
+
