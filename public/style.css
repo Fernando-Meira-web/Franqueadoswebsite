@@ -387,3 +387,38 @@ table.tabela-pedidos td {
     line-height: 1.2;
   }
 }
+
+/* ================= LAYOUT MOBILE ================= */
+@media (max-width: 768px) {
+
+  .main-loja {
+    flex-direction: column;
+  }
+
+  .sec-loja {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .cart-lateral {
+    width: 100%;
+    min-height: auto;
+    border-left: none;
+    border-top: 4px solid #ffffff;
+    margin-top: 20px;
+  }
+
+  .cart-lateral h2 {
+    font-size: 18px;
+  }
+
+  .item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .item button {
+    align-self: flex-end;
+  }
+}
