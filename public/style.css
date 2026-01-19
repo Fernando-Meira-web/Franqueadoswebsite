@@ -6,6 +6,9 @@ body {
   font-size: 16px; /* base confortável */
 }
 
+
+
+
 .navbar {
   background: oklab(93.853% -0.09006 -0.00868);
   padding: 22px;
@@ -356,3 +359,31 @@ table.tabela-pedidos td {
   font-weight: bold;
 }
 
+
+/* ================= NAVBAR MOBILE AJUSTADA ================= */
+@media (max-width: 768px) {
+
+  .navbar {
+    padding: 12px 10px;
+  }
+
+  .nav-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .logo-nav {
+    max-height: 48px;   /* <<< CONTROLE REAL DA LOGO */
+    max-width: 85%;
+    object-fit: contain;
+  }
+
+  .nav-title {
+    position: static;          /* remove absoluto no mobile */
+    transform: none;
+    font-size: 15px;
+    text-align: center;
+    line-height: 1.2;
+  }
+}
