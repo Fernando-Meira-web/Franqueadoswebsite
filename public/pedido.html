@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 <title>Finalizar Pedido – Desce Lava</title>
@@ -10,7 +13,7 @@
 <body>
 
 <header class="topo">
-  <img src="imagens/Logo.png" class="logo">
+  <img src="imagens/BENDITOMAIORAINDA.png" class="logo">
 
 </header>
 
@@ -68,6 +71,12 @@
 </main>
 
 <script>
+function formatarMoeda(valor) {
+  return valor.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
+}
 
 // garante que o servidor está ativo
 console.log("Tela de finalização carregada corretamente");

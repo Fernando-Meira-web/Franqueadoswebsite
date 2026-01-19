@@ -355,5 +355,206 @@
     ],
     "total": 233990.83000000002,
     "data": "19/01/2026, 11:15:58"
+  },
+  {
+    "id": 1768836362087,
+    "unidade": "teste",
+    "responsavel": "teste",
+    "cidade": "teste",
+    "telefone": "teste",
+    "email": "teste@gmail.com",
+    "observacoes": "teste]\r\n",
+    "produtos": [
+      {
+        "nome": "CONJUNTO MAYTAG",
+        "quantidade": 1,
+        "preco": 29435,
+        "subtotal": 29435
+      },
+      {
+        "nome": "CONJUNTO SPEED QUEEN",
+        "quantidade": 1,
+        "preco": 29434,
+        "subtotal": 29434
+      },
+      {
+        "nome": "CONJUNTO OASIS 10KL",
+        "quantidade": 1,
+        "preco": 37990,
+        "subtotal": 37990
+      },
+      {
+        "nome": "CONJUNTO OASIS 15KL",
+        "quantidade": 1,
+        "preco": 64990,
+        "subtotal": 64990
+      },
+      {
+        "nome": "CONJUNTO OASIS 20KL",
+        "quantidade": 1,
+        "preco": 69990,
+        "subtotal": 69990
+      }
+    ],
+    "total": 231839,
+    "data": "19/01/2026, 11:26:02"
+  },
+  {
+    "id": 1768836624482,
+    "unidade": "teste",
+    "responsavel": "teste",
+    "cidade": "teste",
+    "telefone": "teste",
+    "email": "teste@gmail.com",
+    "observacoes": "TESTE",
+    "produtos": [
+      {
+        "nome": "CONJUNTO MAYTAG",
+        "quantidade": 2,
+        "preco": 29435,
+        "subtotal": 58870
+      },
+      {
+        "nome": "AMACIANTE SOFT PLUS DESCE LAVA FRESH 20L",
+        "quantidade": 1,
+        "preco": 430.12,
+        "subtotal": 430.12
+      },
+      {
+        "nome": "AMACIANTE SOFT PLUS DESCE LAVA BREEZE 20L",
+        "quantidade": 1,
+        "preco": 430.12,
+        "subtotal": 430.12
+      },
+      {
+        "nome": "CHEIRINHO AROMANTIZANTE - 5L",
+        "quantidade": 1,
+        "preco": 285.17,
+        "subtotal": 285.17
+      },
+      {
+        "nome": "DETERGENTE CONCETRADO NEUTRO - 20L",
+        "quantidade": 1,
+        "preco": 535.52,
+        "subtotal": 535.52
+      },
+      {
+        "nome": "DESIFETANTE PARA TECIDOS DE ROUPAS",
+        "quantidade": 1,
+        "preco": 285.45,
+        "subtotal": 285.45
+      },
+      {
+        "nome": "LIMPADOR DE MAQUINAS WASHER JET",
+        "quantidade": 1,
+        "preco": 185.45,
+        "subtotal": 185.45
+      },
+      {
+        "nome": "CONJUNTO SPEED QUEEN",
+        "quantidade": 1,
+        "preco": 29434,
+        "subtotal": 29434
+      },
+      {
+        "nome": "CONJUNTO OASIS 20KL",
+        "quantidade": 1,
+        "preco": 69990,
+        "subtotal": 69990
+      },
+      {
+        "nome": "CONJUNTO OASIS 15KL",
+        "quantidade": 1,
+        "preco": 64990,
+        "subtotal": 64990
+      },
+      {
+        "nome": "CONJUNTO OASIS 10KL",
+        "quantidade": 1,
+        "preco": 37990,
+        "subtotal": 37990
+      }
+    ],
+    "total": 263425.82999999996,
+    "data": "19/01/2026, 11:30:24"
+  },
+  {
+    "id": 1768836878139,
+    "unidade": "teste",
+    "responsavel": "teste",
+    "cidade": "Cuiaba MT",
+    "telefone": "teste",
+    "email": "teste@gmail.com",
+    "observacoes": "TESTE",
+    "produtos": [
+      {
+        "nome": "AMACIANTE SOFT PLUS DESCE LAVA FRESH 20L",
+        "quantidade": 1,
+        "preco": 430.12,
+        "subtotal": 430.12
+      },
+      {
+        "nome": "AMACIANTE SOFT PLUS DESCE LAVA BREEZE 20L",
+        "quantidade": 1,
+        "preco": 430.12,
+        "subtotal": 430.12
+      },
+      {
+        "nome": "CHEIRINHO AROMANTIZANTE - 5L",
+        "quantidade": 1,
+        "preco": 285.17,
+        "subtotal": 285.17
+      },
+      {
+        "nome": "DETERGENTE CONCETRADO NEUTRO - 20L",
+        "quantidade": 1,
+        "preco": 535.52,
+        "subtotal": 535.52
+      },
+      {
+        "nome": "DESIFETANTE PARA TECIDOS DE ROUPAS",
+        "quantidade": 1,
+        "preco": 285.45,
+        "subtotal": 285.45
+      },
+      {
+        "nome": "LIMPADOR DE MAQUINAS WASHER JET",
+        "quantidade": 1,
+        "preco": 185.45,
+        "subtotal": 185.45
+      },
+      {
+        "nome": "CONJUNTO MAYTAG",
+        "quantidade": 1,
+        "preco": 29435,
+        "subtotal": 29435
+      },
+      {
+        "nome": "CONJUNTO SPEED QUEEN",
+        "quantidade": 1,
+        "preco": 29434,
+        "subtotal": 29434
+      },
+      {
+        "nome": "CONJUNTO OASIS 20KL",
+        "quantidade": 1,
+        "preco": 69990,
+        "subtotal": 69990
+      },
+      {
+        "nome": "CONJUNTO OASIS 15KL",
+        "quantidade": 1,
+        "preco": 64990,
+        "subtotal": 64990
+      },
+      {
+        "nome": "CONJUNTO OASIS 10KL",
+        "quantidade": 1,
+        "preco": 37990,
+        "subtotal": 37990
+      }
+    ],
+    "total": 233990.83000000002,
+    "data": "19/01/2026, 11:34:38"
   }
 ]
