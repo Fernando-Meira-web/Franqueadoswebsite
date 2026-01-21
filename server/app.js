@@ -84,11 +84,11 @@ const PRECOS = {
   "DESIFETANTE PARA TECIDOS DE ROUPAS": 285.45,
   "LIMPADOR DE MAQUINAS WASHER JET": 185.45,
 
-  "CONJUNTO MAYTAG": 29435.00,
-  "CONJUNTO SPEED QUEEN": 29434.00,
-  "CONJUNTO OASIS 20KL": 69990.00,
-  "CONJUNTO OASIS 15KL": 64990.00,
-  "CONJUNTO OASIS 10KL": 37990.00
+  "CONJUNTO MAYTAG": 00.00,
+  "CONJUNTO SPEED QUEEN": 00.00,
+  "CONJUNTO OASIS 20KL": 00.00,
+  "CONJUNTO OASIS 15KL": 00.00,
+  "CONJUNTO OASIS 10KL": 00.00
 };
 
 /* ================= FORMATAR MOEDA ================= */
@@ -256,30 +256,3 @@ app.get("/teste-email", async (req, res) => {
   }
 });
 
-app.get("/teste-email", async (req, res) => {
-  try {
-    await axios.post(
-      "https://api.brevo.com/v3/smtp/email",
-      {
-        sender: {
-          name: "Teste Desce Lava",
-          email: "no-reply@descelava.com.br"
-        },
-        to: [{ email: process.env.EMAIL_RECEBER }],
-        subject: "✅ TESTE BREVO LOCAL",
-        htmlContent: "<h2>Email de teste enviado com sucesso</h2>"
-      },
-      {
-        headers: {
-          "api-key": process.env.BREVO_API_KEY,
-          "Content-Type": "application/json"
-        }
-      }
-    );
-
-    res.send("Email enviado com sucesso");
-  } catch (err) {
-    console.error(err.response?.data || err.message);
-    res.status(500).send(err.response?.data || err.message);
-  }
-});
