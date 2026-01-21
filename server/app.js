@@ -53,12 +53,12 @@ function cadastrarFranqueado(req, res) {
 
 /* ================= CADASTRO (AMBOS MANTIDOS) ================= */
 
-app.post("/franqueado/cadastro", cadastrarFranqueado);
-app.post("/franqueado/cadastrar", cadastrarFranqueado);
+app.post("/api/franqueado/cadastro", cadastrarFranqueado);
+app.post("/api/franqueado/cadastrar", cadastrarFranqueado);
 
 /* ================= LOGIN ================= */
 
-app.post("/franqueado/login", (req, res) => {
+app.post("/api/franqueado/login", (req, res) => {
   const { cnpj, senha } = req.body;
 
   const franqueados = JSON.parse(fs.readFileSync(FRANQUEADOS_FILE, "utf8"));
@@ -73,7 +73,6 @@ app.post("/franqueado/login", (req, res) => {
 
   res.json({ ok: true, franqueado });
 });
-
 /* ================= TABELA DE PREÇOS ================= */
 
 const PRECOS = {

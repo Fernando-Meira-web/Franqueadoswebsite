@@ -75,7 +75,7 @@ async function cadastrar() {
     return;
   }
 
-  const res = await fetch("/franqueado/cadastro", {
+  const res = await fetch("/api/franqueado/cadastro", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(dados)
