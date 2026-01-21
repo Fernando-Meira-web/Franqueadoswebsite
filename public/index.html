@@ -16,10 +16,32 @@
 <link rel="icon" type="image/png" href="imagens/Simbolo4.PNG">
 <nav class="navbar">
   <div class="nav-content">
-    <img src="imagens/BENDITOMAIORAINDA.png" class="logo-nav">
-    <span class="nav-title">Loja Virtual Franqueados</span>
+
+    <!-- LOGO -->
+    <div class="nav-left">
+      <img src="imagens/BENDITOMAIORAINDA.png" class="logo-nav">
+      <span class="nav-title">Loja Virtual Franqueados</span>
+    </div>
+
+    <!-- BUSCA -->
+    <div class="nav-search">
+      <input 
+        type="text" 
+        id="searchInput"
+        placeholder="Buscar produtos..."
+        onkeyup="filtrarProdutos()"
+      >
+    </div>
+
+    <!-- AÇÕES -->
+    <div class="nav-actions">
+      <a href="login.html" class="nav-icon">👤</a>
+      <a href="#" class="nav-icon" onclick="logout()">🚪 Sair</a>
+    </div>
+
   </div>
 </nav>
+
 
 <main class="main-loja">
 
@@ -235,6 +257,13 @@
 </main>
 
 <script>
+
+  const franqueadoLogado = JSON.parse(localStorage.getItem("franqueadoLogado"));
+
+if (!franqueadoLogado) {
+  window.location.href = "login.html";
+}
+
 let cart = [];
 
 // TABELA DE PREÇOS (fixos, como você confirmou)
@@ -321,6 +350,14 @@ function remover(i) {
 }
 
 function checkout() {
+  const franqueado = localStorage.getItem("franqueadoLogado");
+
+  if (!franqueado) {
+    alert("Faça login para continuar o pedido.");
+    window.location.href = "login.html";
+    return;
+  }
+
   if (cart.length === 0) {
     alert("Nenhum produto selecionado!");
     return;
@@ -329,7 +366,33 @@ function checkout() {
   localStorage.setItem("pedido", JSON.stringify(cart));
   window.location.href = "pedido.html";
 }
+
+
+
+function filtrarProdutos() {
+  const termo = document.getElementById("searchInput").value.toLowerCase();
+  const produtos = document.querySelectorAll(".produto");
+
+  produtos.forEach(produto => {
+    const texto = produto.innerText.toLowerCase();
+    produto.style.display = texto.includes(termo) ? "block" : "none";
+  });
+}
+
+function logout() {
+  localStorage.removeItem("franqueadoLogado");
+  window.location.href = "login.html";
+}
+
 </script>
+
+<a 
+  href="https://wa.me/5517997067477?text=Olá,%20sou%20franqueado%20e%20preciso%20de%20ajuda"
+  class="whatsapp-float"
+  target="_blank"
+>
+  <img src="imagens/WHATS.png" alt="">
+</a>
 
 
 

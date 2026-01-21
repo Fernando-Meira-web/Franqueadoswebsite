@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login do Franqueado – Desce Lava</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<div class="login-admin">
+
+  <img src="imagens/BENDITOMAIORAINDA.png" class="logo" alt="Desce Lava">
+
+  <h2>Área do Franqueado</h2>
+  <p class="subtitulo">Acesse sua conta para fazer pedidos</p>
+
+  <div class="campo-admin">
+    <label>CNPJ</label>
+    <input id="cnpj" placeholder="00.000.000/0000-00">
+  </div>
+
+  <div class="campo-admin">
+    <label>Senha</label>
+    <input id="senha" type="password">
+  </div>
+
+  <button class="btn-login-admin" onclick="login()">
+    Entrar
+  </button>
+
+  <p class="subtitulo" style="margin-top:15px">
+    Não tem cadastro?
+    <a href="cadastro.html">Criar conta</a>
+  </p>
+
+</div>
+
+<script>
+async function login() {
+  const cnpj = document.getElementById("cnpj").value.trim();
+  const senha = document.getElementById("senha").value.trim();
+
+  if (!cnpj || !senha) {
+    alert("Preencha todos os campos");
+    return;
+  }
+
+  try {
+    const res = await fetch("/franqueado/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ cnpj, senha })
+    });
+
+    const data = await res.json();
+
+    if (!data.ok) {
+      alert(data.message || "CNPJ ou senha inválidos");
+      return;
+    }
+
+    localStorage.setItem(
+      "franqueadoLogado",
+      JSON.stringify(data.franqueado)
+    );
+
+    window.location.href = "index.html";
+
+  } catch (err) {
+    alert("Erro ao conectar com o servidor");
+    console.error(err);
+  }
+}
+</script>
+
+
+</body>
+</html>

@@ -12,52 +12,55 @@
 
 <body>
 
-<header class="topo">
-  <img src="imagens/BENDITOMAIORAINDA.png" class="logo">
-
-</header>
-
 <main>
 
 <div class="pedido-container">
 
+  <!-- ✅ LOGO AGORA NO LUGAR CERTO -->
+  <img src="imagens/BENDITOMAIORAINDA.png" class="logo-pedido" alt="Desce Lava">
+
   <h1>Finalizar Pedido</h1>
   <p class="subtitulo">Preencha os dados da sua unidade para confirmar o pedido</p>
 
-  <form class="form-pedido" action="/enpostar" method="post">
+  <form class="form-pedido" action="/enpostar" method="post" onsubmit="return validarPedido()">
 
     <div class="campo">
       <label>Nome da Unidade</label>
-      <input name="unidade" required>
+      <input id="unidade" name="unidade" required>
     </div>
 
     <div class="campo">
       <label>Responsável</label>
-      <input name="responsavel" required>
+      <input id="responsavel" name="responsavel" required>
     </div>
 
     <div class="campo">
       <label>Cidade</label>
-      <input name="cidade" required>
+      <input id="cidade" name="cidade" required>
     </div>
 
     <div class="campo">
       <label>Telefone / WhatsApp</label>
-      <input name="telefone" required>
+      <input id="telefone" name="telefone" required>
     </div>
 
     <div class="campo">
       <label>E-mail da Unidade</label>
-      <input name="email" type="email" required>
+      <input id="email" name="email" type="email" required>
     </div>
 
     <div class="campo">
-      <label>Observações do Pedido</label>
-      <textarea name="observacoes" rows="4"
-        placeholder="Ex: enviar junto com as etiquetas da unidade"></textarea>
+      <label>Observações do Pedido <strong>(obrigatório)</strong></label>
+      <textarea
+        id="observacoes"
+        name="observacoes"
+        rows="4"
+        required
+        placeholder="Ex: enviar junto com as etiquetas da unidade"
+      ></textarea>
     </div>
 
-    <!-- Campo que contém os PRODUTOS DO CARRINHO -->
+    <!-- PRODUTOS -->
     <textarea name="produtos" id="lista_produtos" hidden></textarea>
 
     <button type="submit" class="btn-enviar">
@@ -71,27 +74,46 @@
 </main>
 
 <script>
-function formatarMoeda(valor) {
-  return valor.toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL"
-  });
+/* ================= PROTEÇÃO LOGIN ================= */
+const franqueado = JSON.parse(localStorage.getItem("franqueadoLogado"));
+
+if (!franqueado) {
+  alert("Você precisa estar logado para finalizar o pedido.");
+  window.location.href = "login.html";
 }
 
-// garante que o servidor está ativo
-console.log("Tela de finalização carregada corretamente");
-
-// recupera os produtos selecionados pelo franqueado
+/* ================= PRODUTOS ================= */
 const pedido = localStorage.getItem("pedido");
 
 if (pedido) {
-  // grava no campo hidden para envio ao backend
   document.getElementById("lista_produtos").value = pedido;
 } else {
-  alert("Nenhum produto no carrinho. Volte à loja para selecionar.");
+  alert("Nenhum produto no carrinho.");
   window.location.href = "index.html";
 }
 
+/* ================= AUTOPREENCHIMENTO ================= */
+document.addEventListener("DOMContentLoaded", () => {
+  if (!franqueado) return;
+
+  unidade.value = franqueado.unidade || "";
+  responsavel.value = franqueado.unidade || "";
+  cidade.value = franqueado.cidade || "";
+  telefone.value = franqueado.telefone || "";
+  email.value = franqueado.email || "";
+});
+
+/* ================= VALIDAÇÃO FINAL ================= */
+function validarPedido() {
+  if (!observacoes.value.trim()) {
+    alert("O campo Observações é obrigatório.");
+    observacoes.focus();
+    return false;
+  }
+  return true;
+}
+
+console.log("Tela de finalização carregada corretamente");
 </script>
 
 </body>

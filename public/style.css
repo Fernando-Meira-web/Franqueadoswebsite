@@ -1,72 +1,77 @@
 body {
   margin: 0;
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #000000;
+  background: #0e2b46;
   color: white;
-  font-size: 16px; /* base confortável */
+  font-size: 16px;
 }
 
-
-
+/* ================= HEADER / NAVBAR ================= */
 
 .navbar {
   background: oklab(93.853% -0.09006 -0.00868);
-  padding: 22px;
   border-bottom: 4px solid #000000;
 }
 
 .nav-content {
   max-width: 1400px;
   margin: 0 auto;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
-  position: relative;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* ESQUERDA */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .logo-nav {
-  max-height: 1000px;
-     
-}
-
-.nav-content::after {
-  content: "";
-  flex: 1;
-}
-
-.logo-nav {
-  max-height: 1000px;
-  max-width: 180px;   /* <<< ISSO resolve */
+  max-height: 48px;
+  max-width: 140px;
   object-fit: contain;
 }
 
-
 .nav-title {
-  flex: 1;
-  text-align: center;
-  
-}
-
-.nav-title {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: 700;
   color: #000000;
-  font-weight: bold;
-  pointer-events: none;
-  
+  white-space: nowrap;
 }
 
+/* BUSCA */
+.nav-search {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
 
-.btn-admin {
-  background: #38e1ff;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
+.nav-search input {
+  width: 100%;
+  max-width: 420px;
+  padding: 10px 14px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+/* AÇÕES */
+.nav-actions {
+  display: flex;
+  gap: 14px;
+}
+
+.nav-icon {
+  font-size: 20px;
+  text-decoration: none;
   color: #102a43;
 }
+
+/* ================= LAYOUT PRINCIPAL ================= */
 
 .main-loja {
   display: flex;
@@ -107,7 +112,7 @@ body {
 }
 
 .preco {
-  color: #00d9ff;
+  color: #000000;
   font-size: 18px;
   font-weight: bold;
 }
@@ -125,13 +130,15 @@ body {
 }
 
 .produto button {
-  background: #102a43;
+  background: #00d9ff;
   color: white;
   border: none;
   padding: 12px;
   border-radius: 10px;
   cursor: pointer;
 }
+
+/* ================= CARRINHO ================= */
 
 .cart-lateral {
   width: 25%;
@@ -167,6 +174,8 @@ body {
   border: none;
   cursor: pointer;
 }
+
+/* ================= PÁGINA DE PEDIDO ================= */
 
 .pedido-container {
   width: 420px;
@@ -218,53 +227,19 @@ body {
   color: #666;
   text-align: center;
   margin-bottom: 20px;
-}
-
-.subtitulo {
   font-size: 14px;
-}
-
-.pedido-container h1 {
-  text-align: center;
 }
 
 .campo textarea {
   resize: vertical;
 }
 
-.pedido-container img.logo {
-  display: block;
-  margin: 0 auto 10px auto;
-}
-
-.subtitulo {
-  margin-bottom: 15px;
-}
-
-button.btn-enviar:hover {
-  opacity: 0.9;
-}
-
-
-.logo {
-  max-height: 220px;
-  align-items: center;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
+/* ================= ADMIN ================= */
 
 .admin-wrapper {
   max-width: 1200px;
   margin: 30px auto;
   padding: 20px;
-}
-
-.admin-header {
-  text-align: center;
-  margin-bottom: 25px;
 }
 
 .login-admin {
@@ -275,29 +250,6 @@ button.btn-enviar:hover {
   border-radius: 16px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.2);
   color: #102a43;
-  text-align: left;
-}
-
-.login-admin h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.campo-admin {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
-}
-
-.campo-admin label {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.campo-admin input {
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
 }
 
 .btn-login-admin {
@@ -311,120 +263,31 @@ button.btn-enviar:hover {
   font-weight: bold;
 }
 
-.dashboard {
-  background: white;
-  padding: 25px;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-  color: #102a43;
-}
+/* ================= MOBILE ================= */
 
-.dashboard h1 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-table.tabela-pedidos {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-table.tabela-pedidos th {
-  background: #102a43;
-  color: white;
-  padding: 12px;
-}
-
-table.tabela-pedidos td {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-}
-
-.pedido-detalhe {
-  background: #f1f5f8;
-  padding: 15px;
-  border-radius: 10px;
-  margin-top: 5px;
-}
-
-.btn-exportar {
-  display: block;
-  margin: 20px auto 0 auto;
-  padding: 12px 20px;
-  border-radius: 10px;
-  border: none;
-  background: #00d9ff;
-  color: #102a43;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-
-/* ================= NAVBAR MOBILE AJUSTADA ================= */
 @media (max-width: 768px) {
-
-  .navbar {
-    padding: 12px 10px;
-  }
 
   .nav-content {
     flex-direction: column;
-    align-items: center;
-    gap: 6px;
+    align-items: stretch;
+    gap: 10px;
   }
 
-  .logo-nav {
-    max-height: 48px;   /* <<< CONTROLE REAL DA LOGO */
-    max-width: 85%;
-    object-fit: contain;
+  .nav-left {
+    justify-content: center;
   }
 
   .nav-title {
-    position: static;          /* remove absoluto no mobile */
-    transform: none;
-    font-size: 15px;
-    text-align: center;
-    line-height: 1.2;
-  }
-}
-
-/* ================= LAYOUT MOBILE ================= */
-@media (max-width: 768px) {
-
-  .main-loja {
-    flex-direction: column;
+    font-size: 16px;
   }
 
-  .sec-loja {
-    width: 100%;
-    padding: 15px;
+  .nav-search input {
+    max-width: 100%;
   }
 
-  .cart-lateral {
-    width: 100%;
-    min-height: auto;
-    border-left: none;
-    border-top: 4px solid #ffffff;
-    margin-top: 20px;
+  .nav-actions {
+    justify-content: center;
   }
-
-  .cart-lateral h2 {
-    font-size: 18px;
-  }
-
-  .item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-  }
-
-  .item button {
-    align-self: flex-end;
-  }
-}
-
-/* ===== LAYOUT TIPO MARKETPLACE (MOBILE) ===== */
-@media (max-width: 768px) {
 
   .main-loja {
     flex-direction: column;
@@ -437,9 +300,9 @@ table.tabela-pedidos td {
 
   .cart-lateral {
     width: 100%;
-    position: static;
     min-height: auto;
     border-left: none;
+    border-top: 4px solid #ffffff;
     margin-top: 20px;
   }
 
@@ -448,36 +311,200 @@ table.tabela-pedidos td {
     gap: 12px;
   }
 
-  .produto {
-    padding: 10px;
-    border-radius: 12px;
-  }
-
   .produto img {
     height: 120px;
   }
 
   .produto h3 {
     font-size: 14px;
-    margin: 8px 0;
     min-height: 40px;
   }
+}
 
-  .preco {
-    font-size: 15px;
+/* ================= WHATSAPP ================= */
+
+.whatsapp-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #25d366;
+  color: white;
+  font-size: 26px;
+  padding: 14px 16px;
+  border-radius: 50%;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 999;
+}
+
+.login-admin {
+  max-width: 420px;
+  margin: 60px auto;
+  background: #ffffff;
+  padding: 35px 30px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  color: #102a43;
+  text-align: center;
+}
+
+.login-admin img.logo {
+  max-width: 180px;
+  margin: 0 auto 15px auto;
+  display: block;
+}
+
+.login-admin h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.login-admin .subtitulo {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 25px;
+}
+
+.campo-admin {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+.campo-admin label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.campo-admin input {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+.campo-admin input:focus {
+  outline: none;
+  border-color: #00d9ff;
+}
+
+.btn-login-admin {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: #102a43;
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+.btn-login-admin:hover {
+  opacity: 0.9;
+}
+
+.login-admin a {
+  color: #0a7cff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-admin a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .login-admin {
+    margin: 30px 15px;
+    padding: 28px 20px;
   }
 
-  .produto input {
-    width: 60px;
-    padding: 6px;
+  .login-admin h2 {
+    font-size: 20px;
   }
 
-  .produto button {
-    padding: 10px;
-    font-size: 13px;
+  .campo-admin input {
+    font-size: 14px;
+    padding: 11px;
   }
 
-  .acoes {
-    gap: 6px;
+  .btn-login-admin {
+    font-size: 14px;
+  }
+}
+
+.whatsapp-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: transparent;   /* <<< REMOVE FUNDO */
+  box-shadow: none;          /* <<< REMOVE SOMBRA */
+  width: auto;
+  height: auto;
+  padding: 0;
+  z-index: 999;
+}
+
+.whatsapp-float img {
+  width: 100px;               /* TAMANHO DA LOGO */
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .whatsapp-float img {
+    width: 100px;
+  }
+}
+
+
+/* ===== CORREÇÃO DEFINITIVA LOGO PEDIDO ===== */
+.pedido-container .logo-pedido {
+  display: block !important;
+  max-width: 140px !important;
+  width: 100% !important;
+  height: auto !important;
+  margin: 0 auto 16px auto !important;
+  object-fit: contain !important;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .pedido-container .logo-pedido {
+    max-width: 120px !important;
+    margin-bottom: 12px !important;
+  }
+}
+
+/* 🔥 OVERRIDE ABSOLUTO LOGO PEDIDO */
+body .pedido-container img {
+  max-height: 120px !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 auto 16px auto !important;
+  display: block !important;
+}
+
+/* ================= LOGO PÁGINA SUCESSO ================= */
+
+.logo-sucesso {
+  display: block;
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+  margin: 0 auto 20px auto;
+  object-fit: contain;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .logo-sucesso {
+    max-width: 130px;
   }
 }

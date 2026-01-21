@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadastro de Franqueado – Desce Lava</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<div class="login-admin">
+
+  <img src="imagens/BENDITOMAIORAINDA.png" class="logo">
+
+  <h2>Criar Conta</h2>
+  <p class="subtitulo">Cadastro exclusivo para franqueados</p>
+
+  <div class="campo-admin">
+    <label>Unidade</label>
+    <input id="unidade">
+  </div>
+
+  <div class="campo-admin">
+    <label>CNPJ</label>
+    <input id="cnpj">
+  </div>
+
+  <div class="campo-admin">
+    <label>Cidade</label>
+    <input id="cidade">
+  </div>
+
+  <div class="campo-admin">
+    <label>Telefone</label>
+    <input id="telefone">
+  </div>
+
+  <div class="campo-admin">
+    <label>Email</label>
+    <input id="email">
+  </div>
+
+  <div class="campo-admin">
+    <label>Senha</label>
+    <input id="senha" type="password">
+  </div>
+
+  <button type="button" class="btn-login-admin" onclick="cadastrar()">
+    Criar Conta
+  </button>
+
+</div>
+
+<script>
+async function cadastrar() {
+
+  // ✅ CORREÇÃO REAL AQUI
+  const dados = {
+    unidade: document.getElementById("unidade").value.trim(),
+    cnpj: document.getElementById("cnpj").value.trim(),
+    cidade: document.getElementById("cidade").value.trim(),
+    telefone: document.getElementById("telefone").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    senha: document.getElementById("senha").value.trim()
+  };
+
+  if (!dados.cnpj || !dados.senha) {
+    alert("Preencha os campos obrigatórios");
+    return;
+  }
+
+  const res = await fetch("/franqueado/cadastro", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(dados)
+  });
+
+  const data = await res.json();
+
+  if (!data.ok) {
+    alert(data.message);
+    return;
+  }
+
+  alert("Cadastro realizado com sucesso!");
+  window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>
