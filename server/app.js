@@ -73,6 +73,7 @@ app.post("/api/franqueado/login", (req, res) => {
 
   res.json({ ok: true, franqueado });
 });
+
 /* ================= TABELA DE PREÇOS ================= */
 
 const PRECOS = {
@@ -83,11 +84,11 @@ const PRECOS = {
   "DESIFETANTE PARA TECIDOS DE ROUPAS": 285.45,
   "LIMPADOR DE MAQUINAS WASHER JET": 185.45,
 
-  "CONJUNTO MAYTAG": 00.00,
-  "CONJUNTO SPEED QUEEN": 00.00,
-  "CONJUNTO OASIS 20KL": 00.00,
-  "CONJUNTO OASIS 15KL": 00.00,
-  "CONJUNTO OASIS 10KL": 00.00
+  "CONJUNTO MAYTAG": .00 ,
+  "CONJUNTO SPEED QUEEN": 0.00 ,
+  "CONJUNTO OASIS 20KL": 0.00 ,
+  "CONJUNTO OASIS 15KL": 0.00 ,
+  "CONJUNTO OASIS 10KL": 0.00 
 };
 
 /* ================= FORMATAR MOEDA ================= */
